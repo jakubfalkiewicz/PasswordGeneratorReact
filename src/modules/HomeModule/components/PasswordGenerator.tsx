@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import "./PasswordGenerator.scss"
-import { vectorIcon, copyIcon, refreshIcon } from '@/assets'
+import { copyIcon, refreshIcon } from '@/assets'
 
 interface PasswordSettings {
     uppercase: boolean,
@@ -27,6 +27,8 @@ function generatePassword(length: number, useUppercase?: boolean, useLowercase?:
     }
     return password;
 }
+
+
 
 function PasswordGenerator() {
     const [passwordLength, setPasswordLength] = useState<number>(6)
@@ -62,6 +64,22 @@ function PasswordGenerator() {
     useEffect(() => {
         setStrength(str <= 26 ? 'Low' : str <= 39 ? 'Average' : 'High')
     }, [str])
+
+    //SLIDER BACKGROUND
+    const input = document.querySelector("input") || document.createElement("input");
+    function setBackgroundSize() {
+        input.style.setProperty("--background-size", `${getBackgroundSize()}%`);
+    }
+    setBackgroundSize();
+    input.addEventListener("input", () => setBackgroundSize());
+    function getBackgroundSize() {
+        const min = +input.min || 0;
+        const max = +input.max || 100;
+        const value = +input.value;
+        const size = (value - min) / (max - min) * 100;
+        return size;
+    }
+
 
     return (
         <div className='password_generator'>
